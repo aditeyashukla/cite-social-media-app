@@ -1,5 +1,6 @@
 import './App.css';
 import React from "react";
+import { FirebaseDatabaseProvider } from "@react-firebase/database";
 import {
   BrowserRouter as Router,
   Switch,
@@ -14,6 +15,7 @@ import UserProvider from "./providers/UserProvider";
 
 function App() {
   return (
+      <FirebaseDatabaseProvider>
       <UserProvider>
         <div className="App">
           <Router>
@@ -43,6 +45,7 @@ function App() {
           </Router>
         </div>
       </UserProvider>
+      </FirebaseDatabaseProvider>
   );
 }
 

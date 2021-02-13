@@ -5,3 +5,7 @@
   margin-left: auto;
   margin-right: auto;
 }
+
+.root > * {
+         margin: 5px;
+       }
