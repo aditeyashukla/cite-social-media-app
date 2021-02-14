@@ -1,4 +1,9 @@
-# Citing Social Media App
+# Factually - Social Media with Only Facts
 
-Some1 write a description
+
+# Steps:
+
+1. npm install
+
+2. npm start
 
