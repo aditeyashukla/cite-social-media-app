@@ -1,50 +1,53 @@
 /*
 Component to display and interact with a specific post
  */
-import React from "react";
-import Paper from '@material-ui/core/Paper';
-import Avatar from '@material-ui/core/Avatar'
-import Chip from '@material-ui/core/Chip';
-import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
+import React, { useContext, useState, useEffect } from "react";
+import Paper from "@material-ui/core/Paper";
+import Avatar from "@material-ui/core/Avatar";
+import Chip from "@material-ui/core/Chip";
+import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 import AccountCircle from "@material-ui/core/SvgIcon/SvgIcon";
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import IconButton from "@material-ui/core/IconButton";
-import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import MessageIcon from '@material-ui/icons/Message';
+import { makeStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import MessageIcon from "@material-ui/icons/Message";
+import TextField from "@material-ui/core/TextField";
+import SnackbarContent from "@material-ui/core/SnackbarContent";
+import SendIcon from '@material-ui/icons/Send';
 import {
-    FirebaseDatabaseProvider,
-    FirebaseDatabaseNode,
-    FirebaseDatabaseTransaction
+  FirebaseDatabaseProvider,
+  FirebaseDatabaseNode,
+  FirebaseDatabaseTransaction,
 } from "@react-firebase/database";
+import firebase from "firebase/app";
+import { Typography } from "@material-ui/core";
+import {UserContext} from "../providers/UserProvider";
 
 const useStyles = makeStyles((theme) => ({
-
-    small: {
-        width: theme.spacing(3),
-        height: theme.spacing(3),
-        marginRight: 5
-    },
-
+  small: {
+    width: theme.spacing(3),
+    height: theme.spacing(3),
+    marginRight: 5,
+  },
 }));
 
+function unix_to_date(unix_timestamp) {
+  // Create a new JavaScript Date object based on the timestamp
+  // multiplied by 1000 so that the argument is in milliseconds, not seconds.
+  let date = new Date(unix_timestamp * 1000);
+  // Hours part from the timestamp
+  let hours = date.getHours();
+  // Minutes part from the timestamp
+  let minutes = "0" + date.getMinutes();
 
-function unix_to_date(unix_timestamp){
+  let day = date.getDate();
+  let month = date.getMonth() + 1;
+  let year = date.getFullYear();
 
-// Create a new JavaScript Date object based on the timestamp
-// multiplied by 1000 so that the argument is in milliseconds, not seconds.
-    let date = new Date(unix_timestamp * 1000);
-// Hours part from the timestamp
-    let hours = date.getHours();
-// Minutes part from the timestamp
-    let minutes = "0" + date.getMinutes();
-
-    let day = date.getDate();
-    let month = date.getMonth() + 1;
-    let year = date.getFullYear();
-
-    return hours + ':' + minutes.substr(-2) + ' ' + day + '/' + month + '/' + year;
-
+  return (
+    hours + ":" + minutes.substr(-2) + " " + day + "/" + month + "/" + year
+  );
 }
 
 export default function Post(data) {
