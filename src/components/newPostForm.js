@@ -35,6 +35,7 @@ class NewPost extends React.Component {
       reference_markup: [],
       caption: "",
       modalOpen: false,
+      articleContent: ''
     };
     this.categorySetOp = this.categorySetOp.bind(this);
     this.categorySetDisc = this.categorySetDisc.bind(this);
@@ -124,7 +125,19 @@ class NewPost extends React.Component {
       (responseJson.articleCategory &&
         responseJson.articleCategory !== "unsure")
     ) {
-      //TODO ADD METADATA TO STATE
+
+      this.setState({
+        reference: {
+          ...this.state.reference,
+          title: responseJson.articleTitle,
+          thumbnail: meta.image,
+          description: meta.description,
+          category: "",
+          date: "",
+          name: "",
+        },
+        articleContent: responseJson.articleContent
+      });
 
       this.changeToStage3();
     } else {
@@ -290,12 +303,7 @@ class NewPost extends React.Component {
           {/*        position="relative"/>*/}
           <p>
             {/*TODO ADD REAL CONTENT*/}
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-            malesuada nisl commodo est fermentum, eget laoreet nibh pretium. Nam
-            nisi eros, varius eget imperdiet et, scelerisque vitae diam.
-            Phasellus pulvinar hendrerit lorem, scelerisque eleifend nisl
-            sodales tempus. Sed lorem nunc, bibendum a lacus ac, blandit aliquam
-            ipsum"
+            {this.state.articleContent}
           </p>
           <TextField
             autoFocus
