@@ -10,6 +10,7 @@ import Home from "./components/home";
 import NewPost from "./components/newpost";
 import Post from "./components/post";
 import Account from "./components/account";
+import Header from "./components/header"
 import UserProvider from "./providers/UserProvider";
 
 
@@ -18,6 +19,7 @@ function App() {
       <FirebaseDatabaseProvider>
       <UserProvider>
         <div className="App">
+
           <Router>
             <div>
               {/*

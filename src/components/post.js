@@ -110,25 +110,33 @@ export default function Post(data) {
               </Grid>
             </Grid>
           </div>
-          <li className="item">
-            {postData.reference.thumbnail && (
-              <img
-                className="thumbnail"
-                alt=""
-                src={postData.reference.thumbnail}
-              />
-            )}
-            <h2 className="title">
-              <a href={postData.reference.link}>{postData.reference.title}</a>
-            </h2>
-            <p className="description">{postData.reference.description}</p>
-            <div className="meta">
-              <span>{postData.reference.date}</span>
-              <span className="provider">{postData.reference.name}</span>
 
-              <span>Source category</span>
-            </div>
-          </li>
+            <p className="description">{postData.reference.description}</p>
+              {
+                  postData['category'] === 'Opinion' &&
+                  <li className="item">
+                      {postData.reference.thumbnail && (
+                          <img
+                              className="thumbnail"
+                              alt=""
+                              src={postData.reference.thumbnail}
+                          />
+                      )}
+                      <h2 className="title">
+                          <a href={postData.reference.link}>{postData.reference.title}</a>
+                      </h2>
+
+                  <div className="meta">
+                      <span>{postData.reference.date}</span>
+                      <span className="provider">{postData.reference.name}</span>
+
+                      <span>Source category</span>
+                  </div>
+
+                  </li>
+              }
+
+
           <div className={"category-chips"}>
             <Chip label={postData["category"]} color={"primary"} />
           </div>
@@ -196,7 +204,7 @@ export default function Post(data) {
           >
             <MessageIcon />
           </IconButton>
-          {postData["comments"].length}
+          {/*{postData["comments"].length}*/}
 
           <Paper
             elevation={3}
@@ -227,23 +235,27 @@ export default function Post(data) {
             >
               <SendIcon />
             </IconButton>
-            {Object.keys(postData["comments"]).map((comment, index) => {
-              return (
-                <SnackbarContent
-                  key={index}
-                  message={
-                    <>
-                      <Typography variant="subtitle1">
-                        {postData["comments"][comment].userName}
-                      </Typography>
-                      <Typography variant="subtitle3">
-                        {postData["comments"][comment].content}
-                      </Typography>
-                    </>
-                  }
-                />
-              );
-            })}
+              {('comments' in postData) &&
+                  Object.keys(postData["comments"]).map((comment, index) => {
+                          return (
+                              <SnackbarContent
+                                  key={index}
+                                  message={
+                                      <>
+                                          <Typography variant="subtitle1">
+                                              {postData["comments"][comment].userName}
+                                          </Typography>
+                                          <Typography variant="subtitle3">
+                                              {postData["comments"][comment].content}
+                                          </Typography>
+                                      </>
+                                  }
+                              />
+                          );
+                      })
+
+              }
+
           </Paper>
         </Paper>
       </React.Fragment>

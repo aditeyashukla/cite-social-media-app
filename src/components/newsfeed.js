@@ -33,6 +33,9 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import firebase from "firebase/app";
 import "firebase/database";
 import {
+    Link
+} from "react-router-dom";
+import {
     FirebaseDatabaseProvider,
     FirebaseDatabaseNode
 } from "@react-firebase/database";
@@ -290,7 +293,7 @@ export default function BottomAppBar() {
                     </Fab>
                     <div className={classes.grow} />
 
-
+                    <Link to="/account">
                     <IconButton
                         aria-label="account of current user"
                         aria-controls="primary-search-account-menu"
@@ -300,6 +303,7 @@ export default function BottomAppBar() {
                         <AccountCircle />
 
                     </IconButton>
+                    </Link>
 
 
                 </Toolbar>
