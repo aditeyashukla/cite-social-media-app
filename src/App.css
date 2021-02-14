@@ -46,3 +46,7 @@
 .category-chips {
     margin-left: 12px;
 }
+
+.MuiSnackbarContent-root {
+    background-color: rgb(132 162 158) !important;
+}
