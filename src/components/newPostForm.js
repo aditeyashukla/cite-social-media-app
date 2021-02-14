@@ -119,8 +119,10 @@ class NewPost extends React.Component {
     const meta = responseJson.meta;
 
     if (
-      (responseJson.claims && !responseJson.claims.claimReview.textualRating.contains("False") ||
-      (responseJson.articleCategory && responseJson.articleCategory !== "unsure")
+      (responseJson.claims &&
+        !responseJson.claims.claimReview.textualRating.contains("False")) ||
+      (responseJson.articleCategory &&
+        responseJson.articleCategory !== "unsure")
     ) {
       //TODO ADD METADATA TO STATE
 
