@@ -111,7 +111,7 @@ export default function Post(data) {
             </Grid>
           </div>
 
-            <p className="description">{postData.reference.description}</p>
+
               {
                   postData['category'] === 'Opinion' &&
                   <li className="item">
@@ -125,6 +125,8 @@ export default function Post(data) {
                       <h2 className="title">
                           <a href={postData.reference.link}>{postData.reference.title}</a>
                       </h2>
+
+                      <p className="description">{postData.reference.description}</p>
 
                   <div className="meta">
                       <span>{postData.reference.date}</span>
