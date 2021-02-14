@@ -132,7 +132,7 @@ export default function Post(data) {
                       <span>{postData.reference.date}</span>
                       <span className="provider">{postData.reference.name}</span>
 
-                      <span>Source category</span>
+                      
                   </div>
 
                   </li>

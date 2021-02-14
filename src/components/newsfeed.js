@@ -86,7 +86,7 @@ const useStyles = makeStyles((theme) => ({
 export default function BottomAppBar() {
     const classes = useStyles();
     const user = useContext(UserContext);
-    console.log("URSER",user)
+
     const [chipData, setChipData] = React.useState([
         { key: 0, label: 'Breaking' },
         { key: 1, label: 'Opinion' },
@@ -235,10 +235,10 @@ export default function BottomAppBar() {
                     <FirebaseDatabaseProvider firebase={firebase} {...firebaseConfig}>
                         <FirebaseDatabaseNode
                             path="/"
-                            //orderByChild={""}
+                            orderByChild={"created"}
                             //limitToFirst={this.state.limit}
                             // orderByKey
-                            orderByValue={"created"}
+                            //orderByValue={"created"}
                         >
                             {d => {
                                 let a = (d.value);

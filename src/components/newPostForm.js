@@ -25,6 +25,7 @@ class NewPost extends React.Component {
       topic: "",
       reference: {
         title: "",
+        caption: "",
         link: "",
         thumbnail: "",
         description: "",
@@ -272,7 +273,11 @@ class NewPost extends React.Component {
       const selection = window.getSelection();
       console.log("Got selection", selection.toString());
       this.setState({
-        caption: selection,
+        reference:{
+          ...this.state.reference,
+          caption: selection
+        },
+
       });
     });
   }
@@ -281,7 +286,10 @@ class NewPost extends React.Component {
     const selection = window.getSelection();
     console.log("Got selection", selection.toString());
     this.setState({
-      caption: selection,
+      reference:{
+        ...this.state.reference,
+        caption: selection
+      },
     });
   };
 
@@ -293,6 +301,16 @@ class NewPost extends React.Component {
       stage3 = (
         <>
           <h1>Highlight the part of the article you want to quote!</h1>
+          <TextField
+              autoFocus
+              margin="dense"
+              id="caption"
+              label="I'm thinking about..."
+              type="text"
+              onChange={this.changeCaption}
+              value={this.state.caption}
+              fullWidth
+          />
           {/*<Iframe url={this.state.reference.link}*/}
           {/*        width="450px"*/}
           {/*        height="450px"*/}
@@ -309,8 +327,7 @@ class NewPost extends React.Component {
             margin="dense"
             id="reference"
             type="text"
-            onChange={this.changeCaption}
-            value={this.state.caption}
+            value={this.state.reference.caption}
             fullWidth
           />
 
