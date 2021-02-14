@@ -117,7 +117,7 @@ class NewPost extends React.Component {
       }
     );
     const responseJson = await response.json();
-    const meta = responseJson.meta;
+    const meta = responseJson.meta.meta;
 
     if (
       (responseJson.claims &&
@@ -129,7 +129,7 @@ class NewPost extends React.Component {
         reference: {
           ...this.state.reference,
           title: responseJson.articleTitle,
-          thumbnail: meta.image,
+          thumbnail: meta.image ? meta.image : "",
           description: meta.description,
           category: "",
           date: "",
