@@ -14,7 +14,7 @@ import Grid from "@material-ui/core/Grid";
 import MessageIcon from "@material-ui/icons/Message";
 import TextField from "@material-ui/core/TextField";
 import SnackbarContent from "@material-ui/core/SnackbarContent";
-import SendIcon from '@material-ui/icons/Send';
+import SendIcon from "@material-ui/icons/Send";
 import {
   FirebaseDatabaseProvider,
   FirebaseDatabaseNode,
@@ -22,7 +22,7 @@ import {
 } from "@react-firebase/database";
 import firebase from "firebase/app";
 import { Typography } from "@material-ui/core";
-import {UserContext} from "../providers/UserProvider";
+import { UserContext } from "../providers/UserProvider";
 
 const useStyles = makeStyles((theme) => ({
   small: {
@@ -53,32 +53,29 @@ function unix_to_date(unix_timestamp) {
 export default function Post(data) {
   const classes = useStyles();
   const user = useContext(UserContext);
-  let [commentContent, setCommentContent] = useState('');
+  let [commentContent, setCommentContent] = useState("");
   let postData = data["data"];
   let pid = data["id"];
   let pointPath = `${pid}/points`;
   let commentPath = `${pid}/comments`;
 
   const changeComment = (event) => {
-      const target = event.target;
-      const value =target.value;
-      setCommentContent(value)
+    const target = event.target;
+    const value = target.value;
+    setCommentContent(value);
   };
 
   const addNewComment = () => {
-      let fbref = firebase.database().ref(commentPath);
-      let data = {
-          content: commentContent,
-          points: 0,
-          userID: user.uid,
-          userName: user.displayName,
-          created: firebase.database.ServerValue.TIMESTAMP,
-
-      };
-      fbref.push(data);
-
+    let fbref = firebase.database().ref(commentPath);
+    let data = {
+      content: commentContent,
+      points: 0,
+      userID: user.uid,
+      userName: user.displayName,
+      created: firebase.database.ServerValue.TIMESTAMP,
+    };
+    fbref.push(data);
   };
-
 
   return (
     <>
@@ -221,34 +218,32 @@ export default function Post(data) {
                 width: "90%",
               }}
             />
-              <IconButton
-                  onClick={addNewComment}
-                  aria-label="account of current user"
-                  aria-controls="primary-search-account-menu"
-                  aria-haspopup="true"
-                  color="inherit"
-              >
-                  <SendIcon />
-              </IconButton>
-              {Object.keys(postData['comments']).map((comment, index) => {
-                  return (
-                      <SnackbarContent
-                          key={index}
-                          message={
-                              <>
-                                  <Typography variant="subtitle1">
-                                      {postData['comments'][comment].userName}
-                                  </Typography>
-                                  <Typography variant="subtitle3">
-                                      {postData['comments'][comment].content}
-                                  </Typography>
-                              </>
-                          }
-
-                      />
-                  )}
-              )}
-
+            <IconButton
+              onClick={addNewComment}
+              aria-label="account of current user"
+              aria-controls="primary-search-account-menu"
+              aria-haspopup="true"
+              color="inherit"
+            >
+              <SendIcon />
+            </IconButton>
+            {Object.keys(postData["comments"]).map((comment, index) => {
+              return (
+                <SnackbarContent
+                  key={index}
+                  message={
+                    <>
+                      <Typography variant="subtitle1">
+                        {postData["comments"][comment].userName}
+                      </Typography>
+                      <Typography variant="subtitle3">
+                        {postData["comments"][comment].content}
+                      </Typography>
+                    </>
+                  }
+                />
+              );
+            })}
           </Paper>
         </Paper>
       </React.Fragment>
