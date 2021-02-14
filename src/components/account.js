@@ -130,7 +130,6 @@ export default function NewPost() {
 
   const handleBuyPremiumClick = () => {
     setBuyPremiumModalOpen(true);
-    makePremiumUser(user);
   };
 
   const handleClosePremiumModal = () => {
