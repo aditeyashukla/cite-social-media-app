@@ -25,32 +25,13 @@ import Post from './post'
 import Divider from '@material-ui/core/Divider';
 import {UserContext} from "../providers/UserProvider";
 
-
-const messages = [
-   {
-            "3a6Fo5rrUcBqhUJcLsP0": { // post id
-                "caption": "I totally agree omg",
-                "created": "May 12, 2018 at 10:44:11 PM UTC-5",
-                "userID": "YCrPJF3shzWSHagmr0Zl2WZFBgT2",
-                "userName": "Aditeya Shukla",
-                "category": "Opinion",
-                "reference": "https://us.cnn.com/2021/02/13/politics/trump-concern-charges-january-6/index.html",
-                "thumbnail": "https://cdn.cnn.com/cnnnext/dam/assets/210211174740-106-trump-impeachment-centered-medium-plus-169.jpg",
-                "points": 10,
-                "comments": [
-                    {
-                        "userID": "DDfrdfuehufysnl2WZFBgT2",
-                        "userName": "Ayush Singla",
-                        "content": "Yea bro i love u ur always so right",
-                        "created": "May 12, 2018 at 12:44:11 PM UTC-5",
-                        "points": 1
-                    }]
-            }
-
-    },
-
-
-];
+import firebase from "firebase/app";
+import "firebase/database";
+import {
+    FirebaseDatabaseProvider,
+    FirebaseDatabaseNode
+} from "@react-firebase/database";
+import { firebaseConfig } from "../firebase";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -96,6 +77,7 @@ const useStyles = makeStyles((theme) => ({
 export default function BottomAppBar() {
     const classes = useStyles();
     const user = useContext(UserContext);
+    console.log("URSER",user)
     const [chipData, setChipData] = React.useState([
         { key: 0, label: 'Breaking' },
         { key: 1, label: 'Opinion' },
@@ -157,21 +139,21 @@ export default function BottomAppBar() {
             <Paper component="ul" className={classes.root} style={{backgroundColor:'#84a29e'}}>
 
 
-            {chipData.map((data) => {
-                let icon;
+                {chipData.map((data) => {
+                    let icon;
 
-                return (
-                    <li key={data.key}>
-                        <Chip
-                            icon={icon}
-                            color="primary"
-                            label={data.label}
-                            onDelete={handleChipDelete(data)}
-                            className={classes.chip}
-                        />
-                    </li>
-                );
-            })}
+                    return (
+                        <li key={data.key}>
+                            <Chip
+                                icon={icon}
+                                color="primary"
+                                label={data.label}
+                                onDelete={handleChipDelete(data)}
+                                className={classes.chip}
+                            />
+                        </li>
+                    );
+                })}
             </Paper>
 
             <Paper component="ul" className={classes.root} style={{backgroundColor:'#84a29e'}}>
@@ -197,6 +179,7 @@ export default function BottomAppBar() {
 
 
     const menuId = 'primary-search-account-menu';
+
     const renderMenu = (
         <Menu
             anchorEl={anchorEl}
@@ -217,21 +200,40 @@ export default function BottomAppBar() {
         <React.Fragment>
             <CssBaseline />
             <Container maxWidth="md">
-            <Paper square className={classes.paper}>
-                {/*<Typography className={classes.text} variant="h5" gutterBottom>*/}
-                {/*    Newsfeed*/}
-                {/*</Typography>*/}
-                {/*<List className={classes.list}>*/}
-                    {messages.map((each) => {
-                        let post_id = Object.keys(each)[0];
-                        return (
-                            <Post data={each[post_id]} id={post_id} user={user}/>
+                <Paper square className={classes.paper}>
+                    {/*<h1>Welcome, {user['displayName']}</h1>*/}
+                    <FirebaseDatabaseProvider firebase={firebase} {...firebaseConfig}>
+                        <FirebaseDatabaseNode
+                            path="/"
+                            //orderByChild={""}
+                            //limitToFirst={this.state.limit}
+                            // orderByKey
+                            orderByValue={"created"}
+                        >
+                            {d => {
+                                let a = (d.value);
 
+                                return (
+                                    <>
+                                        {d.value !== null &&
+                                        <>
+                                            {Object.keys(a).map((each) => {
+                                                return (
+                                                    <Post data={a[each]} id={each} user={user}/>
+                                                )}
+                                            )}
+                                        </>
 
-                        )}
-                    )}
-                {/*</List>*/}
-            </Paper>
+                                        }
+                                    </>
+
+                                );
+                            }}
+                        </FirebaseDatabaseNode>
+
+                    </FirebaseDatabaseProvider>
+                    {/*</List>*/}
+                </Paper>
             </Container>
             <AppBar position="fixed" style={{backgroundColor:'#84a29e'}} className={classes.appBar}>
                 <Toolbar>

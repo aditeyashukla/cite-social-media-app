@@ -3,14 +3,15 @@ import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
 
-const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FB_API_KEY,
-  authDomain: "cite-sma.firebaseapp.com",
-  projectId: "cite-sma",
-  storageBucket: "cite-sma.appspot.com",
-  messagingSenderId: process.env.REACT_APP_FB_messagingSenderId,
-  appId: process.env.REACT_APP_FB_appId,
-  measurementId: process.env.REACT_APP_FB_measurementId,
+export const firebaseConfig = {
+    apiKey: process.env.REACT_APP_FB_API_KEY,
+    authDomain: "cite-sma.firebaseapp.com",
+    projectId: "cite-sma",
+    storageBucket: "cite-sma.appspot.com",
+    databaseURL: "https://cite-sma-default-rtdb.firebaseio.com/",
+    messagingSenderId: process.env.REACT_APP_FB_messagingSenderId,
+    appId: process.env.REACT_APP_FB_appId,
+    measurementId: process.env.REACT_APP_FB_measurementId
 };
 
 if (!firebase.apps.length) {

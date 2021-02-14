@@ -12,6 +12,11 @@ import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import MessageIcon from '@material-ui/icons/Message';
+import {
+    FirebaseDatabaseProvider,
+    FirebaseDatabaseNode,
+    FirebaseDatabaseTransaction
+} from "@react-firebase/database";
 
 const useStyles = makeStyles((theme) => ({
 
@@ -23,10 +28,31 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
+
+function unix_to_date(unix_timestamp){
+
+// Create a new JavaScript Date object based on the timestamp
+// multiplied by 1000 so that the argument is in milliseconds, not seconds.
+    let date = new Date(unix_timestamp * 1000);
+// Hours part from the timestamp
+    let hours = date.getHours();
+// Minutes part from the timestamp
+    let minutes = "0" + date.getMinutes();
+
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+
+    return hours + ':' + minutes.substr(-2) + ' ' + day + '/' + month + '/' + year;
+
+}
+
 export default function Post(data) {
     const classes = useStyles();
     let postData =  data['data'];
-    let pid = data['pid'];
+    let pid = data['id'];
+    let pointPath = `${pid}/points`;
+
     return (
         <>
             <React.Fragment key={pid}>
@@ -41,18 +67,18 @@ export default function Post(data) {
                     <div className={'user-post'}>
                         <Grid container spacing={3} style={{marginBottom: '2%'}}>
                             <Grid item xs={12} style={{paddingBottom: 0}}>
-                                <h1 style={{fontFamily: 'Newsreader, serif'}}>"{postData['caption']}"</h1>
+                                <h1 style={{fontFamily: 'Noto Serif, serif'}}>"{postData['caption']}"</h1>
                             </Grid>
 
-                            <Grid item xs={3}>
+                            <Grid item xs={6}>
                             </Grid>
-                            <Grid item xs={3}>
-                            </Grid>
-                            <Grid item xs={3}>
-                            </Grid>
-                            <Grid item xs={3}>
-                                <div style={{display:'flex', fontSize:'16px'}}
-                                > <Avatar  className={classes.small} alt={postData['userName']} src={postData['userName']} />{postData['userName']}</div>
+
+
+                            <Grid item xs={6}>
+                                <div style={{display:'flex', fontSize:'16px', float:'right'}}
+                                >
+                                    {/*<Avatar  className={classes.small} alt={postData['userName']} src={postData['userName']} />*/}
+                                    {postData['userName']} @ {unix_to_date(postData['created'])}</div>
 
                             </Grid>
 
@@ -60,23 +86,23 @@ export default function Post(data) {
                     </Grid>
                         </div>
                     <li className="item">
-                        {postData['thumbnail'] &&
+                        {postData.reference.thumbnail &&
                         <img className="thumbnail"
                              alt=""
-                             src={postData['thumbnail']}
+                             src={postData.reference.thumbnail}
                         />
                         }
                         <h2 className="title">
-                            <a href={postData.reference}>Article Title</a>
+                            <a href={postData.reference.link}>{postData.reference.title}</a>
                         </h2>
                         <p className="description">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada nisl commodo est fermentum, eget laoreet nibh pretium. Nam nisi eros, varius eget imperdiet et, scelerisque vitae diam. Phasellus pulvinar hendrerit lorem, scelerisque eleifend nisl sodales tempus. Sed lorem nunc, bibendum a lacus ac, blandit aliquam ipsum.
+                            {postData.reference.description}
                         </p>
                         <div className="meta">
-                            <span>Date of publishing</span>
+                            <span>{postData.reference.date}</span>
                             <span className="provider">
 
-                                Source name
+                                {postData.reference.name}
         </span>
 
                             <span>Source category</span>
@@ -87,26 +113,67 @@ export default function Post(data) {
                     <Chip label={postData['category']} color={'primary'}/>
                     </div>
 
-                    <IconButton
-                        onClick={() => { alert('upvote, add code for this') }}
-                        aria-label="account of current user"
-                        aria-controls="primary-search-account-menu"
-                        aria-haspopup="true"
-                        color="inherit"
-                    >
-                        <ArrowDropUpIcon />
+                    <FirebaseDatabaseTransaction path={pointPath}>
+                        {({ runTransaction }) => {
+                            return (
+                                <IconButton
+                                    onClick={() => {
+                                        runTransaction({
+                                            reducer: val => {
+                                                if (val === null) {
+                                                    return 0;
+                                                } else {
+                                                    return val + 1;
+                                                }
+                                            }
+                                        }).then(() => {
 
-                    </IconButton>
+                                        });
+                                    }}
+                                    aria-label="account of current user"
+                                    aria-controls="primary-search-account-menu"
+                                    aria-haspopup="true"
+                                    color="inherit"
+                                >
+                                    <ArrowDropUpIcon />
+
+                                </IconButton>
+
+                            );
+                        }}
+
+                    </FirebaseDatabaseTransaction>
                     {postData['points']}
-                    <IconButton
-                        onClick={() => { alert('downvote, add code for this') }}
-                        aria-label="account of current user"
-                        aria-controls="primary-search-account-menu"
-                        aria-haspopup="true"
-                        color="inherit"
-                    >
-                        <ArrowDropDownIcon />
-                    </IconButton>
+                    <FirebaseDatabaseTransaction path={pointPath}>
+                        {({ runTransaction }) => {
+                            return (
+                                <IconButton
+                                    onClick={() => {
+                                        runTransaction({
+                                            reducer: val => {
+                                                if (val === null || val === 0) {
+                                                    return 0;
+                                                } else {
+                                                    return val - 1;
+                                                }
+                                            }
+                                        }).then(() => {
+
+                                        });
+                                    }}
+                                    aria-label="account of current user"
+                                    aria-controls="primary-search-account-menu"
+                                    aria-haspopup="true"
+                                    color="inherit"
+                                >
+                                    <ArrowDropDownIcon />
+
+                                </IconButton>
+
+                            );
+                        }}
+
+                    </FirebaseDatabaseTransaction>
 
                     <IconButton
                         onClick={() => { alert('comments, add code for this') }}
