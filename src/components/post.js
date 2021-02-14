@@ -85,6 +85,11 @@ export default function Post(data) {
 
                     </Grid>
                         </div>
+
+                    {postData['reference'] &&
+
+
+
                     <li className="item">
                         {postData.reference.thumbnail &&
                         <img className="thumbnail"
@@ -109,6 +114,7 @@ export default function Post(data) {
 
                         </div>
                     </li>
+                    }
                     <div className={'category-chips'}>
                     <Chip label={postData['category']} color={'primary'}/>
                     </div>
@@ -185,7 +191,10 @@ export default function Post(data) {
                         <MessageIcon />
 
                     </IconButton>
-                    {postData['comments'].length}
+                    {postData['comments'] &&
+                        <>{postData['comments'].length}</>
+                    }
+
 
 
 

@@ -13,7 +13,6 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
-
 import CreateIcon from '@material-ui/icons/Create';
 import MenuItem from '@material-ui/core/MenuItem';
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -24,7 +23,13 @@ import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import Post from './post'
 import Divider from '@material-ui/core/Divider';
 import {UserContext} from "../providers/UserProvider";
-
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import firebase from "firebase/app";
 import "firebase/database";
 import {
@@ -32,6 +37,7 @@ import {
     FirebaseDatabaseNode
 } from "@react-firebase/database";
 import { firebaseConfig } from "../firebase";
+import NewPost from "./newPostForm";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -89,9 +95,16 @@ export default function BottomAppBar() {
         { key: 3, label: 'Discussion' },
         { key: 4, label: 'Joke' },
     ]);
-    const [activeCategories, setActiveCatergories] = React.useState(['Opinions']);
-    const [disabledCategories, setDisabledCatergories] = React.useState(['Jokes', 'Uncited Opinions']);
 
+    const [openNewPost, setOpenNewPost] = React.useState(false);
+
+    const handleClickOpenNP = () => {
+        setOpenNewPost(true);
+    };
+
+    const handleCloseNP = () => {
+        setOpenNewPost(false);
+    };
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     const isMenuOpen = Boolean(anchorEl);
@@ -195,6 +208,20 @@ export default function BottomAppBar() {
         </Menu>
     );
 
+    const renderNewPost = (
+        <Dialog open={openNewPost} onClose={handleCloseNP} aria-labelledby="form-dialog-title">
+            {/*<DialogTitle id="form-dialog-title">New Post</DialogTitle>*/}
+            <DialogContent style={{textAlign:'center'}}>
+                <NewPost/>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleCloseNP} color="primary">
+                    Close
+                </Button>
+            </DialogActions>
+        </Dialog>
+    )
+
 
     return (
         <React.Fragment>
@@ -257,7 +284,8 @@ export default function BottomAppBar() {
                         </SwipeableDrawer>
                     </React.Fragment>
 
-                    <Fab color="secondary" aria-label="add" className={classes.fabButton} style={{backgroundColor:'#a5a09b'}}>
+                    <Fab color="secondary" aria-label="add" onClick={handleClickOpenNP}
+                         className={classes.fabButton} style={{backgroundColor:'#a5a09b'}}>
                         <CreateIcon />
                     </Fab>
                     <div className={classes.grow} />
@@ -276,7 +304,9 @@ export default function BottomAppBar() {
 
                 </Toolbar>
             </AppBar>
+
             {renderMenu}
+            {renderNewPost}
         </React.Fragment>
     );
 }
