@@ -67,7 +67,7 @@ export default function Post(data) {
                     <div className={'user-post'}>
                         <Grid container spacing={3} style={{marginBottom: '2%'}}>
                             <Grid item xs={12} style={{paddingBottom: 0}}>
-                                <h1 style={{fontFamily: 'Newsreader, serif'}}>"{postData['caption']}"</h1>
+                                <h1 style={{fontFamily: 'Noto Serif, serif'}}>"{postData['caption']}"</h1>
                             </Grid>
 
                             <Grid item xs={6}>
@@ -76,7 +76,9 @@ export default function Post(data) {
 
                             <Grid item xs={6}>
                                 <div style={{display:'flex', fontSize:'16px', float:'right'}}
-                                > <Avatar  className={classes.small} alt={postData['userName']} src={postData['userName']} />{postData['userName']} @ {unix_to_date(postData['created'])}</div>
+                                >
+                                    {/*<Avatar  className={classes.small} alt={postData['userName']} src={postData['userName']} />*/}
+                                    {postData['userName']} @ {unix_to_date(postData['created'])}</div>
 
                             </Grid>
 
