@@ -13,7 +13,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
-import Avatar from '@material-ui/core/Avatar';
+
 import CreateIcon from '@material-ui/icons/Create';
 import MenuItem from '@material-ui/core/MenuItem';
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -33,8 +33,9 @@ const messages = [
                 "created": "May 12, 2018 at 10:44:11 PM UTC-5",
                 "userID": "YCrPJF3shzWSHagmr0Zl2WZFBgT2",
                 "userName": "Aditeya Shukla",
-                "category": "opinions",
-                "reference": "https://www.bbc.com/news/world-us-canada-56038765",
+                "category": "Opinion",
+                "reference": "https://us.cnn.com/2021/02/13/politics/trump-concern-charges-january-6/index.html",
+                "thumbnail": "https://cdn.cnn.com/cnnnext/dam/assets/210211174740-106-trump-impeachment-centered-medium-plus-169.jpg",
                 "points": 10,
                 "comments": [
                     {
@@ -47,7 +48,8 @@ const messages = [
             }
 
     },
-    
+
+
 ];
 
 const useStyles = makeStyles((theme) => ({
@@ -221,7 +223,6 @@ export default function BottomAppBar() {
                 {/*</Typography>*/}
                 {/*<List className={classes.list}>*/}
                     {messages.map((each) => {
-                        console.log(each, "Sfuwegiufh")
                         let post_id = Object.keys(each)[0];
                         return (
                             <Post data={each[post_id]} id={post_id} user={user}/>
