@@ -35,7 +35,7 @@ class NewPost extends React.Component {
       reference_markup: [],
       caption: "",
       modalOpen: false,
-      articleContent: ''
+      articleContent: "",
     };
     this.categorySetOp = this.categorySetOp.bind(this);
     this.categorySetDisc = this.categorySetDisc.bind(this);
@@ -107,7 +107,7 @@ class NewPost extends React.Component {
 
   checkRef = async (event) => {
     const response = await fetch(
-      `http://localhost:5000/fact-check?newsURL=${this.state.reference.link}`,
+      `http://localhost:5000/fact-check?newsUrl=${this.state.reference.link}`,
       {
         method: "POST",
         mode: "cors",
@@ -125,7 +125,6 @@ class NewPost extends React.Component {
       (responseJson.articleCategory &&
         responseJson.articleCategory !== "unsure")
     ) {
-
       this.setState({
         reference: {
           ...this.state.reference,
@@ -136,7 +135,7 @@ class NewPost extends React.Component {
           date: "",
           name: "",
         },
-        articleContent: responseJson.articleContent
+        articleContent: responseJson.articleContent,
       });
 
       this.changeToStage3();
